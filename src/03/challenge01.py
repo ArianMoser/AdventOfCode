@@ -28,6 +28,10 @@ class Move:
     start_point         : Vector
     end_point           : Vector
     direction_vector    : Vector
+@dataclass
+class Interception:
+    pos     : Vector
+    cost    : int
 
 def main():
     print("AdventOfCode - 03 - Challenge 01")
@@ -36,7 +40,7 @@ def main():
     wire2_moves         = []
     connections         = []
     default_start_point = Vector(0, 0)
-    min_distance = 9999999
+    min_cost = 9999999
 
     try:
         f = open("input.txt", "r")
@@ -63,24 +67,31 @@ def main():
                 end_point = add_vectors(start_point, direction_vector, 1)
                 wire2_moves.append(Move(start_point, end_point, direction_vector))
 
+            # get closest interception
+            wire1_cost = 0
             for wire1_move in wire1_moves[1:]:
+                wire1_cost += abs(wire1_move.direction_vector.x + wire1_move.direction_vector.y)
+                wire2_cost = 0
                 for wire2_move in wire2_moves[1:]:
                     try:
+                        wire2_cost += abs(wire2_move.direction_vector.x + wire2_move.direction_vector.y)
                         (func_1, func_2) = get_functions(wire1_move, wire2_move)
                         (x, y) = intersection(func_1, func_2)
                         if x <= 1 and y <= 1 and x >= 0 and y >= 0:
-                            connections.append(Vector( 
+                            connections.append(Interception(Vector( 
                               wire2_move.start_point.x + y * wire2_move.direction_vector.x, 
-                              wire2_move.start_point.y + y * wire2_move.direction_vector.y))
+                              wire2_move.start_point.y + y * wire2_move.direction_vector.y),
+                              wire1_cost + wire2_cost))
                     except NoInterceptionException:
                         pass
 
             print("Found {0} interception points".format(len(connections)))
             sys.stdin.read(1)
             for cp in connections:
-                if get_score(cp, default_start_point) < min_distance:
-                    min_distance = abs(get_score(cp, default_start_point))
-                    print("Minimal distance: {0}".format(min_distance))
+                print("Interception {0}|{1} ({2})".format(cp.pos.x, cp.pos.y, cp.cost))
+                if cp.cost < min_cost:
+                    min_cost = cp.cost
+                    print("Minimal cost: {0}".format(min_cost))
         else:
             raise ExceptionCouldNotOpenFile 
     except ExceptionCouldNotOpenFile: 
