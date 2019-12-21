@@ -7,9 +7,9 @@ class NewIntcoder(Intcoder):
     def __init__(self, commands, inputs):
         #print("Initializing intcoder\n")
         self.inputs = inputs
+        self.commands = commands
         #print("Using input: {0}".format(inputs))
         #print("Press Enter to start the program...")
-        self.start(commands)
 
     def receive_input(self):
         input = self.inputs.pop(0)
@@ -30,15 +30,23 @@ def main():
             print(combination)
             input_out = 0
             prev_input_out = -1
+            # sett all amplifiers
+            amplifiers = []
+            for input_in in combination:
+                amplifiers.append(NewIntcoder(commands, [input_in]))
+
             while input_out != prev_input_out:
                 prev_input_out = input_out
-                for input_in in combination:
-                    inputs = [input_in, input_out]
-                    print(inputs)
-                    input_out = NewIntcoder(commands, inputs).output
+                for amplifier in amplifiers:
+                    amplifier.inputs.append(input_out)
+                    try:
+                        amplifier.start()
+                    except Exception:
+                        pass
+                    print("OUTPUT: {}".format(amplifier.output))
+                    input_out = amplifier.output
                 print("Old: {0} New: {1}".format(prev_input_out, input_out))
             computer_output.append(input_out)
-            sys.stdin.read(1)
         print("Max output is {0}".format(max(computer_output)))
 
     # get the possible input combinations

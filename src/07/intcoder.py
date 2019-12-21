@@ -19,23 +19,25 @@ class ExceptionFinishedOpcode(Error):
 
 class Intcoder:
     output = -1
+    commands = []
+    
     def __init__(self, commands):
         print("Initializing intcoder\n")
         print("Press Enter to start the program...")
         sys.stdin.read(1)
         self.start(commands)
 
-    def start(self, commands):
+    def start(self):
         #print("Starting intcoder")
         pos = 0
         try:
             while True:
-                (commands, pos) = self.compute_intcode(commands, pos)
+                (self.commands, pos) = self.compute_intcode(self.commands, pos)
         except ExceptionFinishedOpcode:
             #print("The progam finished. Please see output above to get the result")
             pass
         except ExceptionInvalidOpcode:
-            print("Error. Received unknown opcode '{0}'".format(commands[pos]))
+            print("Error. Received unknown opcode '{0}'".format(self.commands[pos]))
         except Error:
             print(Error.error)
 
