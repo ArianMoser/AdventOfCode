@@ -13,7 +13,7 @@ def task2(c_min, c_max, letter_positions):
     return 0
 
 
-def parse_input(file_name, task2_bool):
+def validate_passwords(file_name, task2_bool):
     valid_passwords = 0
     with open(file_name) as f:
         for line in f:
@@ -44,7 +44,7 @@ def main():
         print("(Parameter Usage: dayx.py <<file_name>> <<task2 (True|False)>>)")
     print("Using values: \n  Filename: {} \n  Task2: {}".format(file_name, task2_bool))
     print("**************************\n")
-    parse_input(file_name, task2_bool)
+    validate_passwords(file_name, task2_bool)
 
 
 if __name__ == "__main__":
