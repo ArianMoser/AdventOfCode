@@ -38,12 +38,13 @@ def task2(file_name):
         groups = f_content.split("\n\n")
         for group in groups:
             person = group.split("\n")
-            ans = set()
+            ans = None
             for p in person: 
-                if len(ans) == 0:
-                    ans = set(p)
-                else:
-                    ans.intersection_update(set(p))
+                if p != '':
+                    if ans is None:
+                        ans = set(p)
+                    else:
+                        ans.intersection_update(set(p))
             answers += len(ans)
     return answers
 
