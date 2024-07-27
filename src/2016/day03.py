@@ -1,6 +1,6 @@
 import os
 import sys
-from itertools import combinations, permutations
+from itertools import permutations
 
 INPUT_DIR = os.path.join(os.path.dirname(__file__), 'inputs')
 
@@ -42,13 +42,23 @@ def main():
     # part 1
     part1 = 0
     for line in lines:
-        if check_triangle(line):
+        if check_triangle(line.copy()):
             part1 += 1
 
     print(f"Part 1: {part1}")
 
     # part 2
+    part2 = 0
+    triangles = []
+    for i in range(0, len(lines), 3):
+        for pos in range(3):
+            triangles.append([line[pos] for line in lines[i: i+3]])
+    print(f"Received {len(triangles)} triangles")
 
+    for triangle in triangles:
+        if check_triangle(triangle):
+            part2 += 1
+    print(f"Part 2: {part2}")
 
 
 if __name__ == '__main__':
