@@ -63,6 +63,5 @@ def main():
                 print(f"Part 2: {room[1]} ({decrypt_room_name(room)})")
 
 
-
 if __name__ == '__main__':
     main()
