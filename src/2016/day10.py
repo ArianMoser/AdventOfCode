@@ -100,9 +100,10 @@ def main():
 
                 # part 2
                 part2_elements = ['0', '1', '2']
-                if not part2 and all(len(outputs[el]) > 0 for el in part2_elements):
+                if not part2 and \
+                        all(len(outputs[el]) > 0 for el in part2_elements):
                     part2 = math.prod([list(outputs[el])[0] for el in
-                        part2_elements])
+                                       part2_elements])
                     print(f"Part 2: {part2}")
                     part2 = True
 
