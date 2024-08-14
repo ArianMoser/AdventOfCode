@@ -61,19 +61,19 @@ def main():
     i = 0
     while True:
         line = lines[i]
-        if re.match(RE_COPY, line):
+        if 'cpy' in line:
             src, dest = re.search(RE_COPY, line).groups()
             if src in REGISTERS.keys():
                 REGISTERS[dest] = REGISTERS[src]
             else:
                 REGISTERS[dest] = int(src)
-        elif re.match(RE_INC, line):
+        elif 'inc' in line:
             dest = re.search(RE_INC, line).groups()[0]
             REGISTERS[dest] += 1
-        elif re.match(RE_DEC, line):
+        elif 'dec' in line:
             dest = re.search(RE_DEC, line).groups()[0]
             REGISTERS[dest] -= 1
-        elif re.match(RE_JNZ, line):
+        elif 'jnz' in line:
             check, jmp = re.search(RE_JNZ, line).groups()
             if check in REGISTERS.keys():
                 if REGISTERS[check] != 0:
