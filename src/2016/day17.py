@@ -58,44 +58,14 @@ def main():
     size = (3, 3)
     ways = []
 
-    # part 1
-    part1(pos, ways)
-    print(f"Part 1: {sorted(DEST_PATHES, key=len)[0]}")
-
-    # part 2
     MAX_PATH = 0
     DEST_PATHES = []
-    part2(pos, ways)
+    solve(pos, ways)
+    print(f"Part 1: {sorted(DEST_PATHES, key=len)[0]}")
     print(f"Part 2: {MAX_PATH}")
 
 
-def part1(pos, ways):
-    global MAX_PATH, DEST_PATHES
-    if len(ways) > MAX_PATH:
-        return False
-    if pos == size:
-        MAX_PATH = len(ways)
-        DEST_PATHES.append(''.join(ways))
-        return True
-    # generate_hash
-    hsh = hashlib.md5(f"{inp}{''.join(ways)}".encode()).hexdigest()
-    # check available pos
-    av_pos = check_available_pos(pos, size)
-    # check open path
-    pathes = check_open_path(hsh)
-    # check common ways
-    for path in list(set(av_pos).intersection(pathes)):
-        # get the relative position of the direction path
-        rel_pos = (0, 0)
-        for dir_pos, direction in DIRECTION_MAPPER.items():
-            if path == direction:
-                rel_pos = dir_pos
-        new_pos = (pos[0] + rel_pos[0], pos[1] + rel_pos[1])
-        part1(new_pos, ways.copy() + list(path))
-    return False
-
-
-def part2(pos, ways):
+def solve(pos, ways):
     global MAX_PATH, DEST_PATHES
     if pos == size:
         if MAX_PATH < len(ways):
@@ -116,7 +86,7 @@ def part2(pos, ways):
             if path == direction:
                 rel_pos = dir_pos
         new_pos = (pos[0] + rel_pos[0], pos[1] + rel_pos[1])
-        part2(new_pos, ways.copy() + list(path))
+        solve(new_pos, ways.copy() + list(path))
     return False
 
 
